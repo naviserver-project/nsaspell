@@ -1,0 +1,83 @@
+Aspell interface Module for AOLserver 3.x/4.0
+Release 1.0.1
+vlad@crystalballinc.com
+
+This is AOLserver module that implements interface to aspell (http://aspell.net).
+
+/*--------------------------------------------------------------------*/
+
+Compiling and Installing
+
+To compile this driver, you'll need to have aspell 0.50 and higher installed.
+
+Usage
+
+    ns_aspell create lang
+
+      create aspell session, return session id that should be passed
+      as third parameter to all other commands. lang is dictionary
+      language. Please note that as of July 2004, aspell itself is
+      *not* threadsafe.
+      
+      nscp> ns_aspell create en
+      1
+    
+    ns_aspell destroy #
+      destroy aspell session
+      
+    ns_aspell personalwordlist
+      return list of words from your personal dictionary
+      
+    ns_aspell sessionwordlist
+      return list of words from this session dictionary
+      
+    ns_aspell mainwordlist
+      return list of words from main dictionary
+      
+    ns_aspell setconfig name value
+      set config option name with value
+      
+    ns_aspell getconfig name
+      return value of the config option name
+      
+    ns_aspell clearsession
+      clear current session words
+
+    ns_aspell save
+      save current words in your home as .aspell.pws files
+
+    ns_aspell checkword word
+      check word for spelling, returns 1 if correct, 0 if not or error
+      
+    ns_aspell suggestword word
+      return list of word for misspelled word
+      
+    ns_aspell printconfig
+      return list of all config options
+    
+    ns_aspell personaladd word
+      add word to your personal dictionary
+      
+    ns_aspell sessionadd word
+      add word to current session dictionary
+      
+    ns_aspell dictlist
+      return list of avalaible dictionaries
+      
+    ns_aspell checktext text
+      check text for spelling, returns list of misspelled words with 
+      offset: word offset ...
+
+      nscp> ns_aspell suggesttext 1 "the wether is goood"
+      wether 4 goood 14
+
+    ns_aspell suggesttext text
+      check text for spelling, returns list of misspelled words, offset and 
+      suggestions in format: word offset suggestlist ...
+      
+      nscp> ns_aspell suggesttext 1 "the wether is goood"
+      wether 4 {Werther weather whether wither wet her wet-her whither ether withe } 
+      goood 14 {Good good goody God god GOTO od food goof goop goos hood } 
+
+Authors
+     Vlad Seryakov vlad@crystalballinc.com
