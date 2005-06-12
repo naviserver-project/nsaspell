@@ -79,7 +79,7 @@ Nsaspell_Init(Tcl_Interp *interp)
 static int
 AspellCmd(void *context,Tcl_Interp *interp,int objc,Tcl_Obj * CONST objv[])
 {
-    int i;
+    int i,cmd;
     AspellSession *asp;
     AspellConfig *config;
     AspellCanHaveError *ret;
@@ -104,9 +104,9 @@ AspellCmd(void *context,Tcl_Interp *interp,int objc,Tcl_Obj * CONST objv[])
         cmdDictList,
         cmdCheckText,
         cmdSuggestText
-    } cmd;
+    };
       
-    static char *sCmd[] = {
+    static const char *sCmd[] = {
         "sessions",
         "create",
         "destroy",
@@ -409,7 +409,7 @@ AspellCheckText(Tcl_Interp *interp,AspellSession *asp,char *text,int textlen,int
     AspellWordList *wl;
     AspellStringEnumeration *els;
     Tcl_Obj *list = Tcl_NewListObj(0,0);
-    char *encoding = aspell_config_retrieve(asp->config,"encoding");
+    char *encoding = (char*)aspell_config_retrieve(asp->config,"encoding");
 
     aspell_document_checker_reset(asp->checker);
     aspell_document_checker_process(asp->checker,text,textlen);
@@ -429,10 +429,10 @@ AspellCheckText(Tcl_Interp *interp,AspellSession *asp,char *text,int textlen,int
       Tcl_ListObjAppendElement(interp,list,Tcl_NewIntObj(AspellOffset(text,token.offset,encoding)));
       if(suggest) {
         Tcl_Obj *list2 = Tcl_NewListObj(0,0);
-        wl = aspell_speller_suggest(asp->speller,word,-1);
+        wl = (AspellWordList*)aspell_speller_suggest(asp->speller,word,-1);
         if(!aspell_word_list_empty(wl)) {
           els = aspell_word_list_elements(wl);
-          while((s = aspell_string_enumeration_next(els)))
+          while((s = (char*)aspell_string_enumeration_next(els)))
             Tcl_ListObjAppendElement(interp,list2,Tcl_NewStringObj(s,-1));
         }
         Tcl_ListObjAppendElement(interp,list,list2);
