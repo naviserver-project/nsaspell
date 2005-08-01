@@ -59,7 +59,9 @@ Ns_ModuleInit(char *server, char *module)
 
     path = Ns_ConfigGetPath(server,module,NULL);
 
-    return Ns_TclInitInterps(server,AspellInterpInit,0);
+    Ns_TclRegisterTrace(server, AspellInterpInit, 0, NS_TCL_TRACE_CREATE);
+
+    return NS_OK;
 }
 
 static int
