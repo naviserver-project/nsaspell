@@ -41,11 +41,11 @@ typedef struct _AspellSession {
   AspellDocumentChecker *checker;
 } AspellSession;
 
-static int AspellInterpInit(Tcl_Interp *interp,void *context);
 static int AspellCmd(void *context,Tcl_Interp *interp,int objc,Tcl_Obj *CONST objv[]);
 static int AspellList(Tcl_Interp *interp,AspellSpeller *speller,const AspellWordList *wl);
 static int AspellCheckText(Tcl_Interp *interp,AspellSession *asp,char *text,int textlen,int suggest);
 
+static Ns_TclTraceProc AspellInterpInit;
 static Ns_Mutex aspellMutex;
 static unsigned int aspellID = 0;
 static AspellSession *aspellList = 0;
@@ -55,19 +55,15 @@ NS_EXPORT int Ns_ModuleVersion = 1;
 NS_EXPORT int
 Ns_ModuleInit(char *server, char *module)
 {
-    char *path;
-
-    path = Ns_ConfigGetPath(server,module,NULL);
-
     Ns_TclRegisterTrace(server, AspellInterpInit, 0, NS_TCL_TRACE_CREATE);
 
     return NS_OK;
 }
 
 static int
-AspellInterpInit(Tcl_Interp *interp, void *context)
+AspellInterpInit(Tcl_Interp *interp, const void *context)
 {
-    Tcl_CreateObjCommand(interp,"ns_aspell",AspellCmd,context,0);
+    Tcl_CreateObjCommand(interp,"ns_aspell", AspellCmd, (ClientData)context,0);
     return NS_OK;
 }
 

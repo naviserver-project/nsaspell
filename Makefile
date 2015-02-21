@@ -10,7 +10,7 @@ MOD      =  nsaspell.so
 #
 # Objects to build.
 #
-OBJS     = nsaspell.o
+MODOBJS     = nsaspell.o
 
 MODLIBS	 = -laspell
 
