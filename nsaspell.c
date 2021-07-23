@@ -52,7 +52,7 @@ static AspellSession *aspellList = 0;
 
 NS_EXPORT int Ns_ModuleVersion = 1;
 
-NS_EXPORT int
+NS_EXPORT Ns_ReturnCode
 Ns_ModuleInit(char *server, char *module)
 {
     Ns_TclRegisterTrace(server, AspellInterpInit, 0, NS_TCL_TRACE_CREATE);
@@ -60,7 +60,7 @@ Ns_ModuleInit(char *server, char *module)
     return NS_OK;
 }
 
-static int
+static Ns_ReturnCode
 AspellInterpInit(Tcl_Interp *interp, const void *context)
 {
     Tcl_CreateObjCommand(interp,"ns_aspell", AspellCmd, (ClientData)context,0);
